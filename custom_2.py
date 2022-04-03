@@ -8,6 +8,13 @@ def base_64(message):
     #print(base_64_str)
     return base_64_str[:-2]
 
+def base_64_decode(message):
+    #ccc = 4 - len(message)%4
+    #message += '='*ccc
+    
+    byte_mess = base64.b64decode(message)
+    return byte_mess.decode(utf8)
+
 def encry_xor(s1,s2):        ######XOR encrytption 
     xor_mess = [ord(a) ^ ord(b) for a,b in zip(s1,s2)]
     return xor_mess 
@@ -67,5 +74,49 @@ def encode():
         final.writeframes(cover_frames_bytes)
 
     cover.close()
+
+def decrypt_xor(s1,list1):
+    xor_mess = [ord(a) ^ b for a,b in zip(s1,list1)]
+    return xor_mess
+
+def decode():
+    path_to_file = input("Enter the path to wav_file :")
+    seed = input("Enter the seed for decryption :")
+    encoded_file = wave.open(path_to_file,mode = 'r')
+    frame_len = encoded_file.getnframes()
+    cover_frames = list(encoded_file.readframes(frame_len))
+    mid_frame = frame_len//2
+    decry = ''
+    counter = 1
+    
+    while(decry[-5:-1] !='$t3g0'):
+        pseudo_len = 8*counter
+        mess = ''
+        start = mid_frame-int(pseudo_len/2)
+        encoded_frame = cover_frames[start:(start+pseudo_len)]
+        for k in range(len(encoded_frame)):
+            a = format(encoded_frame[k],"08b")
+            mess += a[-1]
+        print(mess)
+        xor_en =[]
+        for k in range(counter):
+            data = mess[8*k:8*(k+1)]
+            #print(data)
+            if(data!= ''):
+                xor_en.append(int(data,2))
+        final_seed =pn_seq(counter,seed)
+        print(xor_en)
+        decode_list = decrypt_xor(final_seed,xor_en)
+        print(decode_list)
+        final = ''
+        for j in range(len(decode_list)):
+            final += chr(int(decode_list[j]))
+        print(final)
+        decry = ''
+        if(len(final)%4!=1):
+            decry = base_64_decode(final)
+        print(decry)
+        counter +=1
         
-encode()
+
+decode()
