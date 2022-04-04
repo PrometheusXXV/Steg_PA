@@ -6,15 +6,16 @@ def base_64(message):
     base_64_bytes = base64.b64encode(mess_bytes)
     base_64_str = base_64_bytes.decode('ascii')
     #print(base_64_str)
-    return base_64_str[:-2]
+    return base_64_str
 
 def base_64_decode(message):
-    #ccc = 4 - len(message)%4
-    #message += '='*ccc
-    
-    byte_mess = base64.b64decode(message)
-    return byte_mess.decode(utf8)
+    try:
+        byte_mess = base64.b64decode(message)
+        return byte_mess.decode('utf8')
+    except Exception:
+        return "aaaa"
 
+    
 def encry_xor(s1,s2):        ######XOR encrytption 
     xor_mess = [ord(a) ^ ord(b) for a,b in zip(s1,s2)]
     return xor_mess 
@@ -89,7 +90,7 @@ def decode():
     decry = ''
     counter = 1
     
-    while(decry[-5:-1] !='$t3g0'):
+    while(decry[-5:] !='$t3g0'):
         pseudo_len = 8*counter
         mess = ''
         start = mid_frame-int(pseudo_len/2)
@@ -97,7 +98,7 @@ def decode():
         for k in range(len(encoded_frame)):
             a = format(encoded_frame[k],"08b")
             mess += a[-1]
-        print(mess)
+        #print(mess)
         xor_en =[]
         for k in range(counter):
             data = mess[8*k:8*(k+1)]
@@ -105,18 +106,21 @@ def decode():
             if(data!= ''):
                 xor_en.append(int(data,2))
         final_seed =pn_seq(counter,seed)
-        print(xor_en)
+        #print(xor_en)
         decode_list = decrypt_xor(final_seed,xor_en)
-        print(decode_list)
+        #print(decode_list)
         final = ''
         for j in range(len(decode_list)):
             final += chr(int(decode_list[j]))
-        print(final)
-        decry = ''
-        if(len(final)%4!=1):
+        #print(final)
+        #print(len(final))
+        
+        if(len(final)%4==0):
             decry = base_64_decode(final)
-        print(decry)
+        #print(decry)
         counter +=1
+
+    print("Encrytpted Message was : ", decry[0:-5])
         
 
 decode()
