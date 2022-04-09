@@ -12,8 +12,6 @@ For Audio:
 PHASE CODING
 CUSTOM 
 
-Completed the LSB and Custom part in Audio Steg and Linked them with the Frontbase
+Completed the LSB, Phase Coding and Custom part in Audio Steg and LSB and PVD in Image Steg and Linked them with the Frontbase
 
-LSB in Image and Phase coding are completed but not linked
-
-Decryption of PRNG and PVD is not Complete.
+Decryption of PRNG is not Complete.
