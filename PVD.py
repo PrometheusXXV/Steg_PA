@@ -1,105 +1,162 @@
-#!/usr/bin/env python3
+import PIL.Image
+from PIL import ImageTk
+from tkinter import *
+from math import floor,ceil
 
-from PIL import Image
-
-
-def range_l_u(diff):
-    if(diff>=0 and diff<8):
-        l=0;u=7;bit_no=3
-    elif(diff>=8 and diff<16):
-        l=8;u=15;bit_no=3
-    elif(diff>=16 and diff<32):
-        l=16;u=31;bit_no=4
-    elif(diff>=32 and diff<64):
-        l=32;u=63;bit_no=5
-    elif(diff>=64 and diff<128):
-        l=64;u=127;bit_no=6
-    elif(diff>=128 and diff<256):
-        l=128;u=255;bit_no=7
-
-    return u,l,bit_no
-
-def new_value(a,b,m,diff_1,diff_2):
-    if(a>=b and diff_2>diff_1):
-        a_new = a+int(m/2) ; b_new = b-int(m/2)
-    if(a<b and diff_2>diff_1):
-        a_new = a+int(m/2) ; b_new = b-int(m/2)
-    if(a>=b and diff_2<=diff_1):
-        a_new = a+int(m/2) ; b_new = b-int(m/2)
-    if(a<b and diff_2<=diff_1):
-        a_new = a+int(m/2) ; b_new = b-int(m/2)
-
-    return a_new ,b_new
-
-    
 def message_to_bits(data):          ### for encoding
     newdata = []
-    newdata = ''.join([format(ord(i), "08b") for i in data])
-    return newdata
+    newdata.append([format(ord(i), "08b") for i in data])
+    return newdata[0]
 
-def pvd_encode(cover,message):
-    data=message_to_bits(message)
-    len_data = len(data)
-    wd ,ht = cover.size
-    pixel = list(cover.getdata())
-    total_pixel = len(pixel)
-    #print(pixel)
-    counter = 0
-    print(data)
-    print(total_pixel)
+def new_value(prev_1,prev_2,dr,db,dg):
+    new_1=[0,0,0]
+    new_2=[0,0,0]
+    val_r = int(dr,2)
+    change_r_1 = floor(val_r/2)
+    change_r_2 = ceil(val_r/2)
+    new_1[0] =int(format(prev_1[0],"08b")[0:5]+format(change_r_1,"08b")[-3:],2)
+    new_2[0] =int(format(prev_2[0],"08b")[0:5]+format(change_r_2,"08b")[-3:],2)
     
-    for i in range(0,len_data,2):
-        if(data.isnumeric()):
-            print(i)
-            a = pixel[i]
-            diff_1 = abs(a[0] - a[1])
-            diff_2 = abs(a[1] - a[2])
-            upper_1, lower_1, no_of_bits_1 = range_l_u(diff_1)
-            need_1 = data[0:no_of_bits_1]
-            #print(data)
-            #print(no_of_bits_1)
-            if(need_1.isnumeric()):
-                need_dec= int(need_1,2)
-                data = data[no_of_bits_1:]
-                diff_1_2 = lower_1+need_dec
-                m = abs(diff_1-diff_1_2)
-                r1,g1 = new_value(a[0],a[1],m,diff_1,diff_1_2)
-            else:
-                break
-            upper_2, lower_2, no_of_bits_2 = range_l_u(diff_2)
-            need_2 = data[0:no_of_bits_2]
-            #print(data)
-            #print(no_of_bits_1)
-            if(need_2.isnumeric()):
-                need_dec= int(need_2,2)
-                data = data[no_of_bits_2:]
-                diff_2_2 = lower_2+need_dec
-                m = abs(diff_2-diff_2_2)
-                g2,b1 = new_value(a[1],a[2],m,diff_2,diff_2_2)
-            else:
-                break
-            g_final = int((g1+g2)/2)
-            g_diff = int((abs(g1-g2))/2)
+    val_g = int(dg,2)
+    change_g_1 = floor(val_g/2)
+    change_g_2 = ceil(val_g/2)
+    new_1[1] = int(format(prev_1[1],"08b")[0:5]+(format(change_g_1,"08b")[-3:]),2)
+    new_2[1] = int(format(prev_2[1],"08b")[0:5]+(format(change_g_2,"08b")[-3:]),2)
+
+    val_b = int(db,2)
+    change_b_1 = floor(val_b/2)
+    change_b_2 = ceil(val_b/2)
+    new_1[2] = int(format(prev_1[2],"08b")[0:6]+(format(change_b_1,"08b")[-2:]),2)
+    new_2[2] = int(format(prev_2[2],"08b")[0:6]+(format(change_b_2,"08b")[-2:]),2)
+    
+    return tuple(new_1),tuple(new_2)
+
+def pvd_encode(img_path,message_input,save_path,frame):
+    message = message_input.get(1.0,"end-1c")
+    path_to_save_file = save_path.get(1.0,"end-1c")
+
+    if(len(img_path)==0):
+        L4 = Label(frame,text = "No Audio File Selected")
+        L4.config(font = ("Times New Roman",12))
+        L4.place(relx = 0.2,rely =0.5,anchor =CENTER)
+    elif(len(message) == 0):
+        L4 = Label(frame,text = "No Message Entered \n Enter the Message to Hide")
+        L4.config(font = ("Times New Roman",12))
+        L4.place(relx = 0.5,rely =0.5,anchor =CENTER)
+    elif(len(path_to_save_file)==0):
+        L5 = Label(frame,text = "Enter the file name \nto save the encoded file \nto procedd")
+        L5.config(font = ("Times New Roman",12))
+        L5.place(relx=0.8,rely=0.35,anchor=CENTER)
+    else:
+        message = message + "$t3g0"
+        cover = PIL.Image.open(img_path)
+        cover = cover.convert("RGB")
+        
+        data = message_to_bits(message)
+        len_data = len(data)
+
+        wd, ht = cover.size
+        pixel =list(cover.getdata())
+        total_pixel=len(pixel)
+
+        for i in range(len_data):
+            a = pixel[2*i]
+            b = pixel[2*i+1]
+
+            ###### R mein 3
+            ###### G mein 2
+            ###### B mein 3
+
+            pseudo =data[i]
+            dr = pseudo[0:3]
+            dg = pseudo[3:6]
+            db = pseudo[6:]
+            a_new,b_new = new_value(a,b,dr,db,dg)
             
-            r_final = r1-g_diff
-            b_final = b1+g_diff
+            pixel[2*i] = a_new
+            pixel[(2*i)+1] = b_new
+        
+        for x in range(wd):
+            for y in range(ht):
+                cover.putpixel((x,y),pixel[(y*wd+x)])
+        cover.save(path_to_save_file,str(path_to_save_file.split('.')[1].upper()))
+        enc_mess = Label(frame,text = "Message Hiding: Success\n Image Saved: Success")
+        enc_mess.config(font = ("Times New Romar",11))
+        enc_mess.place(relx = 0.8,rely = 0.55,anchor = CENTER)
 
-            pixel[i]=(r_final,g_final,b_final)
-        else:
-            break
-    for x in range(wd):
-        for y in range(ht):
-            cover.putpixel((x,y),pixel[(y*wd+x)])          
-    return cover
-             
+    x = PIL.Image.open(path_to_save_file)
+    wd,ht = x.size
+    if(wd>ht):
+        factor = 200/wd
+        wd = 200
+        ht = int(ht*factor)
+    elif(ht>wd):
+        factor = 200/wd
+        ht = 200
+        wd = int(wd*factor)
+    else:
+        wd = 200
+        ht = 200
+    x = x.resize((wd,ht))
+    img = ImageTk.PhotoImage(x)
+    label =Label(frame, image=img)        
+    label.image =img
+    label.place(anchor=CENTER,relx =0.8,rely =0.33)
+
+def pvd_decode(img_path,frame):
+    cover = PIL.Image.open(img_path)
     
-cover = Image.open("D:\IIT_DHANBAD\CYBERLABS\STEG_PA\message.png")
+    pixel = list(cover.getdata())
+    total_pixel =len(pixel)
+    counter = 0 
+    message =''
+    while(message[-5:]!="$t3g0"):
+        
+        a= pixel[2*counter]
+        b= pixel[2*counter+1]
+        mess =''
+        for j in range(3):
+            if(j==0 or j==1):
+                x = int(format(a[j],"08b")[-3:],2)
+                y = int(format(b[j],"08b")[-3:],2)
+                req =x+y
+                mess += format(req,"08b")[-3:]
+            else:
+                x = int(format(a[j],"08b")[-2:],2)
+                y = int(format(b[j],"08b")[-2:],2)
+                req =x+y
+                mess += format(req,"08b")[-2:]
+
+        message += chr(int(mess,2))
+        counter += 1
+
+    if(message[-5:] != "$t3g0"):
+        message = ""
+
+    if (len(message)!= 0):
+        L2 = Label(frame,text = "Decode Successful \nMessage Found:")
+        L2.config(font=("Magneto",11))
+        L2.place(relx =0.8, rely =0.43 ,anchor= CENTER)
+                 
+        output = Label(frame,text = message[:-5])
+        output.config(font=("Times New Roman",12),bd=10)
+        output.place(relx=0.8,rely = 0.5 ,anchor = CENTER)
+    else:
+        L2 = Label(frame,text = "Decode Unsuccessful \n NO Message Found:")
+        L2.config(font=("Magneto",11))
+        L2.place(relx =0.8, rely =0.43 ,anchor= CENTER)
+        
+#print(message_to_bits("ABHINAV"))
+"""cover = Image.open("D:\IIT_DHANBAD\CYBERLABS\STEG_PA\message.png")
 message=input("Enter the message : ")
-
+message = message+"$t3g0"
 cover.convert("RGB")
-print(cover.size)
-
 cover_2 = pvd_encode(cover,message)
-cover_2.show()
+cover_2.save("D:\IIT_DHANBAD\CYBERLABS\STEG_PA\pvd_encoded.png")
 
-#cover.show()
+
+xyz = Image.open("D:\IIT_DHANBAD\CYBERLABS\STEG_PA\pvd_encoded.png")
+pvd_decode(xyz)
+
+
+"""
