@@ -15,6 +15,7 @@ from PVD import *
 from Audio_LSB import *
 from custom_audio_enc import *
 from phase_coding import *
+from prng_2 import*
 
 #path = ''
 
@@ -242,6 +243,62 @@ def image_pvd():
     L2.place(relx =0.5, rely =0.42 ,anchor= CENTER )
 
     frame_image_pvd.pack(side= "top",expand =True,fill = 'both')
+
+def image_prng():
+    root.title("STEG_PA - Image Steganography - PRNG")
+
+    frame_image_prng = Frame(root)
+    current_frame =frame_image_prng
+
+    browse = Button(frame_image_prng,text = "Browse",command = lambda:[(image_open(frame_image_prng))])
+    browse.config(font = ("Courier",12))
+    browse.place(relx = 0.35 ,rely = 0.75,anchor = CENTER)
+    
+    encode = Button(frame_image_prng,text = "Encode",command = lambda:[prng_encode_image(path,message_input,save_path,seed_input,increment_input,frame_image_prng)])
+    encode.config(font = ("Courier",12))
+    encode.place(relx = 0.5 ,rely = 0.75,anchor = CENTER)
+    
+    decode = Button(frame_image_prng,text = "Decode",command = lambda:[prng_decode_image(path,seed_input,increment_input,frame_image_prng)])
+    decode.config(font = ("Courier",12))
+    decode.place(relx = 0.65 ,rely = 0.75,anchor = CENTER)
+
+    reset = Button(frame_image_prng,text = "RESET",command = lambda:[clear_frame(frame_image_prng),image_prng()])
+    reset.config(font = ("Courier",12))
+    reset.place(relx = 0.5 ,rely = 0.82,anchor = CENTER)
+
+    back =Button(frame_image_prng,text = "Back", command =lambda:[frame_image_prng.destroy(),Image_steg()])
+    back.config(font = ("Courier",16))
+    back.place(relx = 0.5 , rely =0.9, anchor = CENTER)
+
+    message_input = Text(frame_image_prng,height =4,width = 17)
+    message_input.place(relx= 0.5,rely=0.14,anchor=CENTER)
+
+    seed_input = Text(frame_image_prng,height =3,width = 6)
+    seed_input.place(relx= 0.43,rely=0.34,anchor=CENTER)
+
+    increment_input = Text(frame_image_prng,height =3,width = 6)
+    increment_input.place(relx= 0.57,rely=0.34,anchor=CENTER)
+    
+    save_path =Text(frame_image_prng,height =5,width =20)
+    save_path.place(relx = 0.5 ,rely= 0.63, anchor =CENTER)
+
+    L1 = Label(frame_image_prng,text = "Enter Message \nTo encode")
+    L1.config(font=("Magneto",11))
+    L1.place(relx =0.5, rely =0.05 ,anchor= CENTER )
+
+    L1 = Label(frame_image_prng,text = "Seed")
+    L1.config(font=("Magneto",11))
+    L1.place(relx =0.43, rely =0.28 ,anchor= CENTER )
+
+    L1 = Label(frame_image_prng,text = "Increment")
+    L1.config(font=("Magneto",11))
+    L1.place(relx =0.57, rely =0.28 ,anchor= CENTER )
+
+    L2 = Label(frame_image_prng,text = "Enter File Name \nWith Extension to SAVE \nthe Encoded File")
+    L2.config(font=("Magneto",11))
+    L2.place(relx =0.5, rely =0.52 ,anchor= CENTER )
+
+    frame_image_prng.pack(side= "top",expand =True,fill = 'both')
     
         
 def image_LSB():
@@ -299,11 +356,11 @@ def Image_steg():
     mask.config(font=("Courier",16))
     mask.place(relx=0.5,rely=0.65,anchor=CENTER)
     """
-    PVD = Button(frame_image,text = "PVD",bd='4',command=None)
+    PVD = Button(frame_image,text = "PVD",bd='4',command=lambda:[frame_image.destroy(),image_LSB()])
     PVD.config(font=("Courier",16))
     PVD.place(relx=0.5,rely=0.35,anchor=CENTER)
 
-    PRNG = Button(frame_image,text = "PRNG",bd='4',command=None)
+    PRNG = Button(frame_image,text = "PRNG",bd='4',command=lambda:[frame_image.destroy(),image_prng()])
     PRNG.config(font=("Courier",16))
     PRNG.place(relx=0.5,rely=0.5,anchor=CENTER)
 
@@ -360,7 +417,7 @@ def LSB_Audio():
     encode.config(font = ("Courier",12))
     encode.place(relx = 0.5 ,rely = 0.7,anchor = CENTER)
     
-    decode = Button(frame_audio_lsb,text = "Decode",command = lambda:[a_lsb_decode(path,frame_audio_lsb)])
+    decode = Button(frame_audio_lsb,text = "Decode",command = lambda:[a_lsb_decode(path,frame_audio_pvd)])
     decode.config(font = ("Courier",12))
     decode.place(relx = 0.65 ,rely = 0.7,anchor = CENTER)
 
@@ -520,7 +577,8 @@ root.geometry("800x700")
 #Audio_steg()
 #phase_coding_audio()
 #image_LSB()
-image_pvd()
+#image_pvd()
+image_prng()
 #win_LSB()
 #custom_audio()
 root.mainloop()
