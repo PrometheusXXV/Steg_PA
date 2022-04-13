@@ -46,7 +46,7 @@ def merge(img,img_2):
         for y in range(ht):
             pseudo_img.putpixel((x,y),pixel[(y*wd+x)])
 
-    pseudo_img.show()
+    pseudo_img.save("merged.png")
     
 def encode():
     path = "test_2.png"
@@ -59,7 +59,41 @@ def encode():
     merge(img,img_2)
     
     #print(img.size)
-    
-    
 
-encode()
+def split(img):
+    pixel_bits = pixel_to_bits(img)
+    wd,ht = img.size
+    pixel_1 = []
+    pixel_2 = []
+    for i in range(len(pixel_bits)):
+        pseudo = pixel_bits[i]
+        new_pixel_1 = [0,0,0]
+        new_pixel_2 = [0,0,0]
+        for j in range(3):
+            temp = pseudo[j]
+            new_pixel_1[j] = temp[0:4]+'0000'
+            new_pixel_2[j] = temp[4:8]+'0000'
+
+        pixel_1.append(tuple(new_pixel_1))
+        pixel_2.append(tuple(new_pixel_2))
+    pixel = bits_to_pixel(pixel_1)
+    pseudo_img = Image.new("RGB",size=(wd,ht))
+    for x in range(wd):
+        for y in range(ht):
+            pseudo_img.putpixel((x,y),pixel[(y*wd+x)])
+
+    pseudo_img.show()
+    pixel = bits_to_pixel(pixel_2)
+    pseudo_img = Image.new("RGB",size=(wd,ht))
+    for x in range(wd):
+        for y in range(ht):
+            pseudo_img.putpixel((x,y),pixel[(y*wd+x)])
+
+    pseudo_img.show()
+
+def decode():
+    path = "merged.png"
+    img = Image.open(path,'r')
+    split(img)
+
+decode()
