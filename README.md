@@ -15,3 +15,4 @@ CUSTOM
 
 Completed the LSB, Phase Coding and Custom part in Audio Steg and LSB ,PVD and PRNG in Image Steg and Linked them with the Frontbase
 
+Keep the source files and test files in same folder for easy use.
