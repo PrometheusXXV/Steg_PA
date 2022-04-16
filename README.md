@@ -6,6 +6,7 @@ For Image:
 >LSB
 PRNG
 PVD
+Hiding Image in Image
 
 For Audio:
 >LSB
