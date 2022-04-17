@@ -2,18 +2,20 @@
 
 It is a Steganography GUI based Tool which helps in Encryption and Decryption of Image and Audio.
 
-Methods Used:
+### Methods Used:
 #### For Image :
 - LSB
 - PRNG
 - PVD
 - Hiding Image in Image
 
+First 3 methods are used to hide text message in image and the last one is used for hiding image message in image.
+
 #### For Audio:
 - LSB
 - PHASE CODING
 - CUSTOM 
 
-Completed the LSB, Phase Coding and Custom part in Audio Steg and LSB ,PVD and PRNG in Image Steg and Linked them with the Frontbase
+All 3 methods are used to hide text message in audio file.
 
 Keep the source files and test files in same folder for easy use.
