@@ -20,7 +20,10 @@ All 3 methods are used to hide text message in audio file.
 
 ## Working Environment:
 Python 3.10  
-Keep the source files and test files in same folder for easy use.
+
+## Running The Script:
+Downlaod the all Scripts from the src folder and put them in same folder.  
+Put the test images and audio file in the same folder as src scripts for better running of tool.
 
 ## Supported File Format:  
 For Image: png,jpg  
