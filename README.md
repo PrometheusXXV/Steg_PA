@@ -2,7 +2,8 @@
 
 It is a Steganography GUI based Tool which helps in Encryption and Decryption of Image and Audio.
 
-For Image:
+Methods Used:
+#####For Image :
 >LSB
 PRNG
 PVD
