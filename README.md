@@ -3,11 +3,11 @@
 It is a Steganography GUI based Tool which helps in Encryption and Decryption of Image and Audio.
 
 Methods Used:
-#####For Image :
->LSB
-PRNG
-PVD
-Hiding Image in Image
+For Image :
+*LSB
+*PRNG
+*PVD
+*Hiding Image in Image
 
 For Audio:
 >LSB
