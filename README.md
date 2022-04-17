@@ -19,5 +19,5 @@ First 3 methods are used to hide text message in image and the last one is used 
 All 3 methods are used to hide text message in audio file.
 
 ## Working Environment:
-Python 3.10.
+Python 3.10  .
 Keep the source files and test files in same folder for easy use.
