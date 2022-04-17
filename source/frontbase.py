@@ -599,17 +599,6 @@ def Audio_steg():######## root change karna hai
     
 root =Tk()
 root.geometry("800x700")
-#menu_bar()
-#LSB_Audio()
-#main_win()
-#Image_steg()
-image_IH()
-#Audio_steg()
-#phase_coding_audio()
-#image_LSB()
-#image_pvd()
-#image_prng()
-#win_LSB()
-#custom_audio()
+main_win()
 root.mainloop()
 
