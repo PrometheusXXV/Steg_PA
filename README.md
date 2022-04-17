@@ -21,3 +21,7 @@ All 3 methods are used to hide text message in audio file.
 ## Working Environment:
 Python 3.10  
 Keep the source files and test files in same folder for easy use.
+
+## Supported File Format:  
+For Image: png,jpg  
+For Audio: wav
