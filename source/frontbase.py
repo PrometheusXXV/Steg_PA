@@ -449,7 +449,7 @@ def LSB_Audio():
     encode.config(font = ("Courier",12))
     encode.place(relx = 0.5 ,rely = 0.7,anchor = CENTER)
     
-    decode = Button(frame_audio_lsb,text = "Decode",command = lambda:[a_lsb_decode(path,frame_audio_pvd)])
+    decode = Button(frame_audio_lsb,text = "Decode",command = lambda:[a_lsb_decode(path,frame_audio_lsb)])
     decode.config(font = ("Courier",12))
     decode.place(relx = 0.65 ,rely = 0.7,anchor = CENTER)
 
