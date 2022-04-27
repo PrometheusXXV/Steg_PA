@@ -134,10 +134,4 @@ def lsb_decode_image(img_path,frame):
         L2.config(font=("Magneto",11))
         L2.place(relx =0.8, rely =0.43 ,anchor= CENTER)
           
-"""
-print("Encode the image")
-encode_image()
-print("Decode the image")
-decode_image()
-"""
     
