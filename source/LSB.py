@@ -66,7 +66,7 @@ def lsb_encode_image(img_path,message_input,save_path,frame):
         L5.place(relx=0.8,rely=0.35,anchor=CENTER)
     else:
         image = PIL.Image.open(img_path,'r')
-        #image = image.convert("RGB")
+        image = image.convert("RGB")
         # need to check the above line
         data = data + "$t3g0"
 
