@@ -16,7 +16,7 @@ from PVD import *
 from Audio_LSB import *
 from custom_audio_enc import *
 from phase_coding import *
-from prng_2 import*
+from prng import*
 from img_in_img import *
 
 #path = ''
